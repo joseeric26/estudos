@@ -1,0 +1,165 @@
+{
+  "name": "1 - Formulário de inscrição com confirmação automática",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Cadastro de Alunos",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Nome Completo:",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "E-mail:"
+            },
+            {
+              "fieldLabel": "Curso:",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Análise e Desenvolvimento de Sistemas"
+                  },
+                  {
+                    "option": "Engenharia de Software"
+                  },
+                  {
+                    "option": "Engenharia de Computação"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Turno:",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Matutino"
+                  },
+                  {
+                    "option": "Vespertino"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -240,
+        0
+      ],
+      "id": "8a702d9d-f604-4958-940f-10be33be815d",
+      "name": "On form submission",
+      "webhookId": "022fa5af-fad0-40bd-a1ad-71aa8656cdd4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0de8adfa-01a1-4d1c-8807-95be90fb09a7",
+              "name": "Nome",
+              "value": "={{ $json['Nome Completo:'] }}",
+              "type": "string"
+            },
+            {
+              "id": "228b279b-42de-491a-9e41-c4ccfbd2692e",
+              "name": "E-mail",
+              "value": "={{ $json['E-mail:'] }}",
+              "type": "string"
+            },
+            {
+              "id": "21d35630-9c64-406d-993f-a04f83d08340",
+              "name": "Curso",
+              "value": "={{ $json['Curso:'] }}",
+              "type": "string"
+            },
+            {
+              "id": "0c7c88cb-2339-409f-a70a-5e20c3dd95ef",
+              "name": "Turno",
+              "value": "={{ $json['Turno:'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -16,
+        0
+      ],
+      "id": "35446a0a-bd78-4374-a5ad-e244d244df71",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['E-mail:'] }}",
+        "subject": "Inscrição Concluída com Sucesso!",
+        "message": "=Olá {{ $json.Nome }}!\nSua inscrição no curso de {{ $json.Curso }}, turno {{ $json.Turno }}, foi recebida com sucesso.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "1acf18da-b043-4ba3-90e5-974343de65e9",
+      "name": "Send a message",
+      "webhookId": "47eeb1bc-e669-4a46-ada6-417d7b9a8d63",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "qe3ssXVbPYHyAaKk",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "5904c76c-9eb6-4e3d-81c2-aef7d77b9159",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d7323e564c9578cf5fff13691f34eba1f0538ecb97f68c82f35ce4eb439c651e"
+  },
+  "id": "68981Pu5uRJE5tev",
+  "tags": []
+}

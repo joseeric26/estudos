@@ -1,0 +1,572 @@
+{
+  "name": "3 - Notificação de Resultado Final",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -288,
+        32
+      ],
+      "id": "ad72da01-473c-43cf-ba71-67bd6fabebbf",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1mJwaY9YnSQNbx01Qyax3dfb4It_nsbblZXjjNDYlF2A",
+          "mode": "list",
+          "cachedResultName": "Banco de Dados Alunos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mJwaY9YnSQNbx01Qyax3dfb4It_nsbblZXjjNDYlF2A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 244506334,
+          "mode": "list",
+          "cachedResultName": "Banco de dados",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mJwaY9YnSQNbx01Qyax3dfb4It_nsbblZXjjNDYlF2A/edit#gid=244506334"
+        },
+        "filtersUI": {
+          "values": []
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -64,
+        32
+      ],
+      "id": "2bd58044-1d6b-4a84-b8b1-352e6c7c81c4",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "VNMB0Q34xn4TqPlP",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "11623099-772d-4889-9cb5-bc687692b2ae",
+              "name": "Nome",
+              "value": "={{ $json.Nome }}",
+              "type": "string"
+            },
+            {
+              "id": "8b27aa53-ee35-40b1-92d5-6f4c26f4636d",
+              "name": "E-mail",
+              "value": "={{ $json['E-mail'] }}",
+              "type": "string"
+            },
+            {
+              "id": "b48e3012-59ef-403a-b4b7-39228706cce1",
+              "name": "Nota",
+              "value": "={{ $json.Nota }}",
+              "type": "string"
+            },
+            {
+              "id": "2852b234-9cb7-4ce2-bff8-e8733e27a043",
+              "name": "Faltas",
+              "value": "={{ $json.Faltas }}",
+              "type": "number"
+            },
+            {
+              "id": "f9e0a262-24bd-445d-823e-6180f2f89cbe",
+              "name": "Status",
+              "value": "={{ $json.Status }}",
+              "type": "string"
+            },
+            {
+              "id": "542febf7-0dd6-4867-a707-592379b5c822",
+              "name": "Notificação Enviada",
+              "value": "={{ $json['Notificação Enviada'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        160,
+        32
+      ],
+      "id": "adff79b6-6666-4d61-a808-49a791d698db",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "4c1b2a43-54c2-47fd-8e17-bccc43e9f57a",
+              "leftValue": "={{ $json['Notificação Enviada'] }}",
+              "rightValue": "Não",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.3,
+      "position": [
+        384,
+        32
+      ],
+      "id": "3043eae2-12c3-4c83-af6c-5f6030a0f638",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Status }}",
+                    "rightValue": "Aprovado",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "d26b0f77-0d2f-4e06-aba1-82e624b57bda"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Aprovado"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "fdc4c898-5222-4f53-b228-fc527e20619f",
+                    "leftValue": "={{ $json.Status }}",
+                    "rightValue": "Reprovado por Nota",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reprovado por Nota"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "c7aa0a82-2534-472c-9565-8cc72f459e9b",
+                    "leftValue": "={{ $json.Status }}",
+                    "rightValue": "Reprovado por Falta",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Reprovado por Falta"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        608,
+        16
+      ],
+      "id": "29afd63b-bbb1-43b6-b574-a80586e1db1e",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1mJwaY9YnSQNbx01Qyax3dfb4It_nsbblZXjjNDYlF2A",
+          "mode": "list",
+          "cachedResultName": "Banco de Dados Alunos",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mJwaY9YnSQNbx01Qyax3dfb4It_nsbblZXjjNDYlF2A/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 244506334,
+          "mode": "list",
+          "cachedResultName": "Banco de dados",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1mJwaY9YnSQNbx01Qyax3dfb4It_nsbblZXjjNDYlF2A/edit#gid=244506334"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "row_number": "={{ $('Get row(s) in sheet').item.json.row_number }}",
+            "Notificação Enviada": "Sim"
+          },
+          "matchingColumns": [
+            "row_number"
+          ],
+          "schema": [
+            {
+              "id": "Nome",
+              "displayName": "Nome",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "E-mail",
+              "displayName": "E-mail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Telefone",
+              "displayName": "Telefone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Curso",
+              "displayName": "Curso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Turno",
+              "displayName": "Turno",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Nota",
+              "displayName": "Nota",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Faltas",
+              "displayName": "Faltas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Notificação Enviada",
+              "displayName": "Notificação Enviada",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1056,
+        32
+      ],
+      "id": "2973083b-3e1b-41a1-88e8-ce380fe80856",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "VNMB0Q34xn4TqPlP",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['E-mail'] }}",
+        "subject": "Resultado Final",
+        "message": "=Olá {{ $json.Nome }},\n\nParabéns! Você foi aprovado com média {{ $json.Nota }}.\n\nDesejamos muito sucesso na próxima etapa da sua jornada acadêmica.\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        -160
+      ],
+      "id": "8c3356f9-335c-4e0b-a205-f8d5b6030f18",
+      "name": "Aprovado",
+      "webhookId": "be51b5a2-afcf-4b44-b564-6ac24d2b2e04",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "qe3ssXVbPYHyAaKk",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['E-mail'] }}",
+        "subject": "Resultado Final",
+        "message": "=Olá {{ $json.Nome }},\n\nInfelizmente você não atingiu a média mínima necessária. Sua nota final foi {{ $json.Nota }}.\n\nContinue se dedicando e não desista dos seus objetivos.\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        32
+      ],
+      "id": "1031fe83-a79c-43d5-86f2-76806aa27a17",
+      "name": "Repro Nota",
+      "webhookId": "be51b5a2-afcf-4b44-b564-6ac24d2b2e04",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "qe3ssXVbPYHyAaKk",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['E-mail'] }}",
+        "subject": "Resultado Final",
+        "message": "=Olá {{ $json.Nome }},\n\nVocê foi reprovado por exceder o limite permitido de faltas. Foram registradas {{ $json.Faltas }} faltas ao longo do período letivo.\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        224
+      ],
+      "id": "88fa914a-c53a-430e-a484-35def6b31b3d",
+      "name": "Repro Falta",
+      "webhookId": "be51b5a2-afcf-4b44-b564-6ac24d2b2e04",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "qe3ssXVbPYHyAaKk",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Aprovado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Repro Nota",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Repro Falta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aprovado": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Repro Nota": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Repro Falta": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "4fabb14a-5bf5-429d-a981-d91b00ce410e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d7323e564c9578cf5fff13691f34eba1f0538ecb97f68c82f35ce4eb439c651e"
+  },
+  "id": "qIvF0iHT3bo4Jzst",
+  "tags": []
+}

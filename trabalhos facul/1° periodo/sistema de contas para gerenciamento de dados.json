@@ -1,0 +1,836 @@
+{
+  "name": "sistema de contas",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Olá! Sou seu assistente de gerenciamento de contas.\n\nPosso ajudá-lo a:\n• Consultar contas existentes\n• Adicionar novas contas\n\nComo posso ajudar?",
+        "options": {
+          "allowFileUploads": true,
+          "inputPlaceholder": "Digite sua mensagem...",
+          "loadPreviousSession": "memory",
+          "showWelcomeScreen": true,
+          "getStarted": "Iniciar Conversa",
+          "subtitle": "Consulte e adicione contas facilmente",
+          "title": "Gerenciamento de Contas"
+        }
+      },
+      "id": "103e40f5-eb07-4853-a95d-5274c9999452",
+      "name": "Chat Trigger",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        240,
+        640
+      ],
+      "webhookId": "61c5b453-f436-4c42-b579-9b5060d4ae10"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "id": "620e0f66-f170-4e10-a99a-4936d581385e",
+      "name": "Chat Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        312,
+        864
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Você é um assistente especializado em gerenciamento de contas chamada valéria.\n\nFerramentas disponíveis:\n- \"criar tabela de contas\": Use para criar a tabela de contas, apenas caso não exista.\n- \"ler contas\": Use para consultar todas as contas existentes.\n- \"criar conta\": Use para adicionar contas\n- \"criar pasta dados\" : Use para criar tabela de dados, apenas caso não exista.\n- \"alterar dados\": Use para alterar os dados de um cidadão da tabela de dados\n- \"ler dados\": Use para ler a tabela de dados\n- \"editar contas\": Use para editar as contas\n- \"adicionar dados\": Use para adicionar um cidadão ao banco de dados\n\nQuando o usuário de linha 1 pedir para adicionar uma conta, colete todas as informações necessárias (nome, linha, e-mail e senha) e use a ferramenta criar contas para registrar a nova conta.\n\nQuando o usuário de linha 3 pedir para ver as contas, use a ferramenta ler contas para ler.\n\nQuando o usuário de linha 2 pedir para alterar os dados do cidadão, utilize a ferramenta alterar dados.\n\nQuando o usuário de linha 3 pedir para ver um dado, use a ferramenta ler dados para ler a tabela de dados.\n\nQuando o usuário de linha 1 pedir para adicionar um dado a um cidadão, use a ferramenta alterar dados\n\nQuando o usuário de linha 1 pedir para adicionar um cidadão, use a ferramenta adicionar dados\n\nQuando o usuário de linha 2 pedir para alterar os dados de uma conta, utilize a ferramenta alterar dados.\n\nSempre definir:\ncidadão=coluna em dados\ndados=linha em dados\nconta=coluna em contas\ndados da conta=linha em contas\n\nPermissões:\n1= pode adicionar\n2= pode alterar e deletar\n3= pode ver\n\nSempre consultar permissões antes de iniciar a conversa para responder apenas conforme elas\n\nSempre responda em português de forma clara e amigável",
+          "maxIterations": 10,
+          "returnIntermediateSteps": false
+        }
+      },
+      "id": "22d998bc-61bc-4da8-aabf-0bc909ba3621",
+      "name": "Accounts Manager Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1032,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-5-mini"
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "id": "63c17bca-92ac-493e-acdd-e0eb35e99d49",
+      "name": "OpenAI Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        592,
+        864
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "table",
+        "operation": "create",
+        "tableName": "dados",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        864
+      ],
+      "id": "352f3f60-9b00-4ab3-8309-ce25fb5fa6c0",
+      "name": "criar pasta dados"
+    },
+    {
+      "parameters": {
+        "resource": "table",
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        }
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1.1,
+      "position": [
+        848,
+        864
+      ],
+      "id": "5433eac1-8800-4d19-ad79-03b9198c7ada",
+      "name": "alterar dados"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "returnAll": true
+      },
+      "id": "8d0e7ce1-14c6-4ad8-88f6-57ca550ae222",
+      "name": "ler contas",
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1.1,
+      "position": [
+        976,
+        864
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1.1,
+      "position": [
+        1104,
+        864
+      ],
+      "id": "8c9730bf-4b86-4677-a587-b69f698405dc",
+      "name": "criar tabela de contas"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "columns": {
+          "0": "{",
+          "1": "{",
+          "2": " ",
+          "3": "/",
+          "4": "*",
+          "5": "n",
+          "6": "8",
+          "7": "n",
+          "8": "-",
+          "9": "a",
+          "10": "u",
+          "11": "t",
+          "12": "o",
+          "13": "-",
+          "14": "g",
+          "15": "e",
+          "16": "n",
+          "17": "e",
+          "18": "r",
+          "19": "a",
+          "20": "t",
+          "21": "e",
+          "22": "d",
+          "23": "-",
+          "24": "f",
+          "25": "r",
+          "26": "o",
+          "27": "m",
+          "28": "A",
+          "29": "I",
+          "30": "-",
+          "31": "o",
+          "32": "v",
+          "33": "e",
+          "34": "r",
+          "35": "r",
+          "36": "i",
+          "37": "d",
+          "38": "e",
+          "39": "*",
+          "40": "/",
+          "41": " ",
+          "42": "$",
+          "43": "f",
+          "44": "r",
+          "45": "o",
+          "46": "m",
+          "47": "A",
+          "48": "I",
+          "49": "(",
+          "50": "\"",
+          "51": "a",
+          "52": "c",
+          "53": "c",
+          "54": "o",
+          "55": "u",
+          "56": "n",
+          "57": "t",
+          "58": "D",
+          "59": "a",
+          "60": "t",
+          "61": "a",
+          "62": "\"",
+          "63": ",",
+          "64": " ",
+          "65": "\"",
+          "66": "A",
+          "67": "c",
+          "68": "c",
+          "69": "o",
+          "70": "u",
+          "71": "n",
+          "72": "t",
+          "73": " ",
+          "74": "d",
+          "75": "a",
+          "76": "t",
+          "77": "a",
+          "78": " ",
+          "79": "t",
+          "80": "o",
+          "81": " ",
+          "82": "i",
+          "83": "n",
+          "84": "s",
+          "85": "e",
+          "86": "r",
+          "87": "t",
+          "88": " ",
+          "89": "a",
+          "90": "s",
+          "91": " ",
+          "92": "J",
+          "93": "S",
+          "94": "O",
+          "95": "N",
+          "96": " ",
+          "97": "o",
+          "98": "b",
+          "99": "j",
+          "100": "e",
+          "101": "c",
+          "102": "t",
+          "103": "\"",
+          "104": ")",
+          "105": " ",
+          "106": "}",
+          "107": "}",
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "9b5c3a04-1226-460e-b020-71e3875c793d",
+      "name": "editar contas",
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1.1,
+      "position": [
+        1232,
+        864
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "columns": {
+          "0": "{",
+          "1": "{",
+          "2": " ",
+          "3": "/",
+          "4": "*",
+          "5": "n",
+          "6": "8",
+          "7": "n",
+          "8": "-",
+          "9": "a",
+          "10": "u",
+          "11": "t",
+          "12": "o",
+          "13": "-",
+          "14": "g",
+          "15": "e",
+          "16": "n",
+          "17": "e",
+          "18": "r",
+          "19": "a",
+          "20": "t",
+          "21": "e",
+          "22": "d",
+          "23": "-",
+          "24": "f",
+          "25": "r",
+          "26": "o",
+          "27": "m",
+          "28": "A",
+          "29": "I",
+          "30": "-",
+          "31": "o",
+          "32": "v",
+          "33": "e",
+          "34": "r",
+          "35": "r",
+          "36": "i",
+          "37": "d",
+          "38": "e",
+          "39": "*",
+          "40": "/",
+          "41": " ",
+          "42": "$",
+          "43": "f",
+          "44": "r",
+          "45": "o",
+          "46": "m",
+          "47": "A",
+          "48": "I",
+          "49": "(",
+          "50": "\"",
+          "51": "a",
+          "52": "c",
+          "53": "c",
+          "54": "o",
+          "55": "u",
+          "56": "n",
+          "57": "t",
+          "58": "D",
+          "59": "a",
+          "60": "t",
+          "61": "a",
+          "62": "\"",
+          "63": ",",
+          "64": " ",
+          "65": "\"",
+          "66": "A",
+          "67": "c",
+          "68": "c",
+          "69": "o",
+          "70": "u",
+          "71": "n",
+          "72": "t",
+          "73": " ",
+          "74": "d",
+          "75": "a",
+          "76": "t",
+          "77": "a",
+          "78": " ",
+          "79": "t",
+          "80": "o",
+          "81": " ",
+          "82": "i",
+          "83": "n",
+          "84": "s",
+          "85": "e",
+          "86": "r",
+          "87": "t",
+          "88": " ",
+          "89": "a",
+          "90": "s",
+          "91": " ",
+          "92": "J",
+          "93": "S",
+          "94": "O",
+          "95": "N",
+          "96": " ",
+          "97": "o",
+          "98": "b",
+          "99": "j",
+          "100": "e",
+          "101": "c",
+          "102": "t",
+          "103": "\"",
+          "104": ")",
+          "105": " ",
+          "106": "}",
+          "107": "}",
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "6bb55b15-c040-4a93-8991-12aed3137efc",
+      "name": "ler dados",
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1.1,
+      "position": [
+        1360,
+        864
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "columns": {
+          "0": "{",
+          "1": "{",
+          "2": " ",
+          "3": "/",
+          "4": "*",
+          "5": "n",
+          "6": "8",
+          "7": "n",
+          "8": "-",
+          "9": "a",
+          "10": "u",
+          "11": "t",
+          "12": "o",
+          "13": "-",
+          "14": "g",
+          "15": "e",
+          "16": "n",
+          "17": "e",
+          "18": "r",
+          "19": "a",
+          "20": "t",
+          "21": "e",
+          "22": "d",
+          "23": "-",
+          "24": "f",
+          "25": "r",
+          "26": "o",
+          "27": "m",
+          "28": "A",
+          "29": "I",
+          "30": "-",
+          "31": "o",
+          "32": "v",
+          "33": "e",
+          "34": "r",
+          "35": "r",
+          "36": "i",
+          "37": "d",
+          "38": "e",
+          "39": "*",
+          "40": "/",
+          "41": " ",
+          "42": "$",
+          "43": "f",
+          "44": "r",
+          "45": "o",
+          "46": "m",
+          "47": "A",
+          "48": "I",
+          "49": "(",
+          "50": "\"",
+          "51": "a",
+          "52": "c",
+          "53": "c",
+          "54": "o",
+          "55": "u",
+          "56": "n",
+          "57": "t",
+          "58": "D",
+          "59": "a",
+          "60": "t",
+          "61": "a",
+          "62": "\"",
+          "63": ",",
+          "64": " ",
+          "65": "\"",
+          "66": "A",
+          "67": "c",
+          "68": "c",
+          "69": "o",
+          "70": "u",
+          "71": "n",
+          "72": "t",
+          "73": " ",
+          "74": "d",
+          "75": "a",
+          "76": "t",
+          "77": "a",
+          "78": " ",
+          "79": "t",
+          "80": "o",
+          "81": " ",
+          "82": "i",
+          "83": "n",
+          "84": "s",
+          "85": "e",
+          "86": "r",
+          "87": "t",
+          "88": " ",
+          "89": "a",
+          "90": "s",
+          "91": " ",
+          "92": "J",
+          "93": "S",
+          "94": "O",
+          "95": "N",
+          "96": " ",
+          "97": "o",
+          "98": "b",
+          "99": "j",
+          "100": "e",
+          "101": "c",
+          "102": "t",
+          "103": "\"",
+          "104": ")",
+          "105": " ",
+          "106": "}",
+          "107": "}",
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "7f89fb5b-091e-42cc-88a2-0b281dbcffeb",
+      "name": "adicionar dados",
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1.1,
+      "position": [
+        1488,
+        864
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "columns": {
+          "0": "{",
+          "1": "{",
+          "2": " ",
+          "3": "/",
+          "4": "*",
+          "5": "n",
+          "6": "8",
+          "7": "n",
+          "8": "-",
+          "9": "a",
+          "10": "u",
+          "11": "t",
+          "12": "o",
+          "13": "-",
+          "14": "g",
+          "15": "e",
+          "16": "n",
+          "17": "e",
+          "18": "r",
+          "19": "a",
+          "20": "t",
+          "21": "e",
+          "22": "d",
+          "23": "-",
+          "24": "f",
+          "25": "r",
+          "26": "o",
+          "27": "m",
+          "28": "A",
+          "29": "I",
+          "30": "-",
+          "31": "o",
+          "32": "v",
+          "33": "e",
+          "34": "r",
+          "35": "r",
+          "36": "i",
+          "37": "d",
+          "38": "e",
+          "39": "*",
+          "40": "/",
+          "41": " ",
+          "42": "$",
+          "43": "f",
+          "44": "r",
+          "45": "o",
+          "46": "m",
+          "47": "A",
+          "48": "I",
+          "49": "(",
+          "50": "\"",
+          "51": "a",
+          "52": "c",
+          "53": "c",
+          "54": "o",
+          "55": "u",
+          "56": "n",
+          "57": "t",
+          "58": "D",
+          "59": "a",
+          "60": "t",
+          "61": "a",
+          "62": "\"",
+          "63": ",",
+          "64": " ",
+          "65": "\"",
+          "66": "A",
+          "67": "c",
+          "68": "c",
+          "69": "o",
+          "70": "u",
+          "71": "n",
+          "72": "t",
+          "73": " ",
+          "74": "d",
+          "75": "a",
+          "76": "t",
+          "77": "a",
+          "78": " ",
+          "79": "t",
+          "80": "o",
+          "81": " ",
+          "82": "i",
+          "83": "n",
+          "84": "s",
+          "85": "e",
+          "86": "r",
+          "87": "t",
+          "88": " ",
+          "89": "a",
+          "90": "s",
+          "91": " ",
+          "92": "J",
+          "93": "S",
+          "94": "O",
+          "95": "N",
+          "96": " ",
+          "97": "o",
+          "98": "b",
+          "99": "j",
+          "100": "e",
+          "101": "c",
+          "102": "t",
+          "103": "\"",
+          "104": ")",
+          "105": " ",
+          "106": "}",
+          "107": "}",
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "9ad3acae-024f-480f-849c-c9d97e5cc167",
+      "name": "criar conta",
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1.1,
+      "position": [
+        1616,
+        864
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Chat Trigger": {
+      "main": [
+        [
+          {
+            "node": "Accounts Manager Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Chat Trigger",
+            "type": "ai_memory",
+            "index": 0
+          },
+          {
+            "node": "Accounts Manager Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Accounts Manager Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "criar pasta dados": {
+      "ai_tool": [
+        [
+          {
+            "node": "Accounts Manager Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "alterar dados": {
+      "ai_tool": [
+        [
+          {
+            "node": "Accounts Manager Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ler contas": {
+      "ai_tool": [
+        [
+          {
+            "node": "Accounts Manager Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "criar tabela de contas": {
+      "ai_tool": [
+        [
+          {
+            "node": "Accounts Manager Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "editar contas": {
+      "ai_tool": [
+        [
+          {
+            "node": "Accounts Manager Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ler dados": {
+      "ai_tool": [
+        [
+          {
+            "node": "Accounts Manager Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "adicionar dados": {
+      "ai_tool": [
+        [
+          {
+            "node": "Accounts Manager Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "criar conta": {
+      "ai_tool": [
+        [
+          {
+            "node": "Accounts Manager Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c77a9797-a252-4e3b-b1d0-f154c74b8edb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "80fbf72b178b6d0cee6d30fb182bb9de9548f529151446833a313133b7ebfd64"
+  },
+  "id": "iBC0dTwL19WdyYTR",
+  "tags": []
+}

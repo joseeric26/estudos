@@ -1,0 +1,180 @@
+{
+  "name": "sistema de contas",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "account-form",
+        "authentication": "basicAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "509aec4f-f2b7-4486-98de-136f41eafbb5",
+      "name": "Form Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        304
+      ],
+      "webhookId": "5b132e50-f2dc-4c6a-8b00-95faaaa3ab44"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.headers[\"content-type\"] }}",
+              "rightValue": "application/json",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              },
+              "id": "f43fe172-8609-4c32-8b3d-3eeb5b162d60"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "12820cc6-eee6-4376-afd1-4c6f2b091589",
+      "name": "Check Request Method",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        464,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "ejLIeFBCIS6uODKf",
+          "mode": "list",
+          "cachedResultName": "contas",
+          "cachedResultUrl": "/projects/ZmBUDtFJsTw9ILEi/datatables/ejLIeFBCIS6uODKf"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "name": "={{ $json.body.name }}",
+            "email": "={{ $json.body.email }}",
+            "accountType": "={{ $json.body.accountType }}",
+            "createdDate": "={{ $now.toISO() }}"
+          }
+        },
+        "options": {}
+      },
+      "id": "e452f6f4-a1bb-4730-9c71-f2ec1de2bf59",
+      "name": "Save Account Data",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        688,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ { \"success\": true, \"message\": \"Account created successfully\", \"accountId\": $json.id ?? null } }}",
+        "options": {}
+      },
+      "id": "e107238d-aeea-4786-b8e0-e73c84e54ccd",
+      "name": "Send Success Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        912,
+        304
+      ]
+    },
+    {
+      "parameters": {
+        "html": "<!DOCTYPE html>\n<html>\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Account Management</title>\n  <style>\n    body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; background: #f5f5f5; }\n    .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }\n    h1 { color: #333; margin-bottom: 30px; }\n    .form-group { margin-bottom: 20px; }\n    label { display: block; margin-bottom: 5px; color: #555; font-weight: bold; }\n    input, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }\n    button { background: #007bff; color: white; padding: 12px 30px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; width: 100%; }\n    button:hover { background: #0056b3; }\n    .success { display: none; color: #28a745; padding: 15px; background: #d4edda; border-radius: 4px; margin-top: 20px; }\n  </style>\n</head>\n<body>\n  <div class=\"container\">\n    <h1>Account Management System</h1>\n    <form id=\"accountForm\">\n      <div class=\"form-group\">\n        <label for=\"name\">Full Name *</label>\n        <input type=\"text\" id=\"name\" name=\"name\" required>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"email\">Email Address *</label>\n        <input type=\"email\" id=\"email\" name=\"email\" required>\n      </div>\n      <div class=\"form-group\">\n        <label for=\"accountType\">Account Type *</label>\n        <select id=\"accountType\" name=\"accountType\" required>\n          <option value=\"\">Select type...</option>\n          <option value=\"basic\">Basic</option>\n          <option value=\"premium\">Premium</option>\n          <option value=\"enterprise\">Enterprise</option>\n        </select>\n      </div>\n      <button type=\"submit\">Create Account</button>\n    </form>\n    <div class=\"success\" id=\"successMsg\">Account created successfully!</div>\n  </div>\n  <script>\n    document.getElementById(\"accountForm\").addEventListener(\"submit\", async (e) => {\n      e.preventDefault();\n      const formData = {\n        name: document.getElementById(\"name\").value,\n        email: document.getElementById(\"email\").value,\n        accountType: document.getElementById(\"accountType\").value\n      };\n      const response = await fetch(window.location.href, {\n        method: \"POST\",\n        headers: { \"Content-Type\": \"application/json\" },\n        body: JSON.stringify(formData)\n      });\n      if (response.ok) {\n        document.getElementById(\"accountForm\").reset();\n        document.getElementById(\"successMsg\").style.display = \"block\";\n        setTimeout(() => { document.getElementById(\"successMsg\").style.display = \"none\"; }, 3000);\n      }\n    });\n  </script>\n</body>\n</html>"
+      },
+      "id": "64cdc8f4-d1c4-46ee-8153-08f65a41b9a9",
+      "name": "Account Form HTML",
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        688,
+        208
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Form Webhook": {
+      "main": [
+        [
+          {
+            "node": "Check Request Method",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Request Method": {
+      "main": [
+        [
+          {
+            "node": "Save Account Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Account Form HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Account Data": {
+      "main": [
+        [
+          {
+            "node": "Send Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Account Form HTML": {
+      "main": [
+        [
+          {
+            "node": "Send Success Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "8caec7f5-9aac-486d-bc64-cbd54b5f5255",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "80fbf72b178b6d0cee6d30fb182bb9de9548f529151446833a313133b7ebfd64"
+  },
+  "id": "iBC0dTwL19WdyYTR",
+  "tags": []
+}

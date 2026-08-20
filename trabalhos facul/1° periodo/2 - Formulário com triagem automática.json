@@ -1,0 +1,265 @@
+{
+  "name": "2 - Formulário com triagem automática",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Inscrição para Estágio",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Nome Completo:"
+            },
+            {
+              "fieldLabel": "E-mail:"
+            },
+            {
+              "fieldLabel": "Idade:",
+              "fieldType": "number"
+            },
+            {
+              "fieldLabel": "Área de Interesse:",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Desenvolvimento Web"
+                  },
+                  {
+                    "option": "Banco de Dados"
+                  },
+                  {
+                    "option": "Segurança da Informação"
+                  },
+                  {
+                    "option": "Inteligência Artificial"
+                  }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Nível de Conhecimento:",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Iniciante"
+                  },
+                  {
+                    "option": "Intermediario"
+                  },
+                  {
+                    "option": "Avançado"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -448,
+        -32
+      ],
+      "id": "a1428d67-da3a-4b37-8c8c-a5c62c48ae46",
+      "name": "On form submission",
+      "webhookId": "4126b651-8142-40d7-b074-13a43eb1cca7"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a655d6bf-d392-49d2-a3e7-03bbc089a1ce",
+              "name": "Nome",
+              "value": "={{ $json['Nome Completo:'] }}",
+              "type": "string"
+            },
+            {
+              "id": "68864504-81df-4a82-81aa-aafee649f02e",
+              "name": "E-mail",
+              "value": "={{ $json['E-mail:'] }}",
+              "type": "string"
+            },
+            {
+              "id": "b82f6868-597f-41cb-b151-7b75a8057f82",
+              "name": "Idade",
+              "value": "={{ $json['Idade:'] }}",
+              "type": "number"
+            },
+            {
+              "id": "a396e193-bdc4-4a83-b75a-80edfc8444f0",
+              "name": "Área de Interesse",
+              "value": "={{ $json['Área de Interesse:'] }}",
+              "type": "string"
+            },
+            {
+              "id": "00364bd6-0bdd-4c8a-8f85-91ee088c509e",
+              "name": "Nível de Conhecimento",
+              "value": "={{ $json['Nível de Conhecimento:'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -224,
+        -32
+      ],
+      "id": "6ee0ac66-7c4d-4e67-8ff1-81c408721756",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "61cf3dee-280a-411a-93b2-3a545cbfac54",
+              "leftValue": "={{ $json.Idade }}",
+              "rightValue": 20,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            },
+            {
+              "id": "e2ed7112-420e-4bda-af9f-08de5288ea01",
+              "leftValue": "={{ $json['Nível de Conhecimento'] }}",
+              "rightValue": "Intermediario",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        0,
+        -32
+      ],
+      "id": "a7e3b2ac-6283-4763-a7d8-717afb9a9b6c",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['E-mail'] }}",
+        "subject": "Inscrição Aprovada!",
+        "message": "=Parabéns {{ $json.Nome }}!\nVocê foi aprovado para a próxima etapa do programa de estágio.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        -128
+      ],
+      "id": "5e1476eb-1f3e-4384-91a6-be1795cbe196",
+      "name": "Aprovado",
+      "webhookId": "3616f879-7bb4-4b27-b760-8ade84eed0da",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "qe3ssXVbPYHyAaKk",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json['E-mail'] }}",
+        "subject": "Inscrição de Estágio",
+        "message": "=Olá {{ $json.Nome }}!\nNo momento você não atende aos critérios mínimos para esta vaga.",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        224,
+        64
+      ],
+      "id": "798166d6-87e6-460c-b063-75af5cdc24ba",
+      "name": "Reprovado",
+      "webhookId": "3616f879-7bb4-4b27-b760-8ade84eed0da",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "qe3ssXVbPYHyAaKk",
+          "name": "Gmail OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Aprovado",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Reprovado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "1a6d38c0-9c2e-438d-be60-9ae7b330f817",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d7323e564c9578cf5fff13691f34eba1f0538ecb97f68c82f35ce4eb439c651e"
+  },
+  "id": "Mkshfbi35kmMTMYR",
+  "tags": []
+}

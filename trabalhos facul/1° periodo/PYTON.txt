@@ -1,0 +1,43 @@
+PYTON
+#Comentario que não interfere no programa:
+#comentario
+#Criar variavel:
+variavel= tipo("mensagem")
+#Tipos de variavel:
+int = valor numerico inteiro
+float = valor numerico racional
+string = mensagem ou codigo não utilizado em calculo
+#Calculo numerico:
+(variavel da resposta) = variavel1 (+)/(-)/(*)/(/) variavel2
+#Pedir variavel:
+variavel= tipo(tipo("mensagem apresentada para pedir a variavel"))
+#Variavel sequencia de numeros:
+for (variavel sequencia de numeros) in range(começo,fim,paço)
+#Variavel sequencia de variaveis:
+(variavel sequencia de variaveis)= (variavel1,variavel2,variavel3)
+#somar certas variaveis em uma variavel sequencia de variaveis:
+(variavel da resposta)= sum(v in (variavel sequencia de variaveis) if condição)
+#somar o numero de certas variaveis em uma variavel sequencia de variaveis:
+(variavel da resposta)= sum(1 for v in (variavel sequencia de variaveis) if condição)
+#Mostrar:
+print(variavel ou "mensagem", variavel ou "mensagem")
+#Criar condição:
+if (condição 1):
+    ação 1
+elif (condição 2):#pode ser feito mais de uma vez
+    ação 2
+else:
+    ação 3
+#Impor mais de uma condição:
+or
+#Comaçar ação continua:
+While condição
+#Parar ação continua:
+break
+#Criar variavel do numero de execuções:
+i=0
+while
+variavel = variavel + 1
+codigo
+#iniciar contagem:
+for i in range(numero de vezes)

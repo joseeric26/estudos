@@ -1,0 +1,157 @@
+{
+  "name": "4 - Análisado de Documentos",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Envio de Arquivo para Análise",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Arquivo",
+              "fieldType": "file"
+            }
+          ]
+        },
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.5,
+      "position": [
+        -16,
+        -64
+      ],
+      "id": "6051b8e4-81a5-45f2-a72f-150bd56497f3",
+      "name": "On form submission",
+      "webhookId": "98a4fb34-4ed0-4100-ab02-6ae72cd0f505"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "Arquivo",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        208,
+        -64
+      ],
+      "id": "6a13f2ce-2ac1-4e1a-9776-dafb112772f5",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=Você é um assistente especialista em análise de documentos.\n\nLeia o texto extraído de um PDF e gere:\n\n1. Um resumo curto do documento\n2. Os principais pontos abordados\n3. Uma explicação simples e fácil de entender\n4. Possíveis insights ou observações importantes\n\nOrganize a resposta em tópicos e utilize linguagem clara e objetiva."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        432,
+        -64
+      ],
+      "id": "fa5c618c-2f96-4d56-8884-baacf85bf1c5",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        512,
+        160
+      ],
+      "id": "af769504-9cd2-4512-b5f2-1ad284957e59",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Wja30KtlW9vAw5aK",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "completionTitle": "Análise Concluída",
+        "completionMessage": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.5,
+      "position": [
+        784,
+        -64
+      ],
+      "id": "bf7405d7-b364-4c20-a4c3-4370485f952d",
+      "name": "Form",
+      "webhookId": "d9f0b1ac-f2f4-40ff-879f-a6eebb8f6668"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e118d813-05ea-410b-8477-4182f17524ca",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d7323e564c9578cf5fff13691f34eba1f0538ecb97f68c82f35ce4eb439c651e"
+  },
+  "id": "TjygIMcKYubOcqDP",
+  "tags": []
+}
