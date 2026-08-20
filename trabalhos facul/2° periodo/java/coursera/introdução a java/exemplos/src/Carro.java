@@ -54,7 +54,7 @@ public class Carro {
         mach5.setManufaturado(LocalDate.of(1967, 4, 2));
 
         for (Carro carro: new Carro[]{carro54, mach5}) {
-            System.out.println("%s tem %d anos e chega a %d mph%n", carro.getNome(), carro.getidade(), carro.getVelocidade());
+            System.out.println( "%s tem %d anos e chega a %d mph%n" + carro.getVelocidade() + carro.getNome() + carro.getidade());
         }
 
     }

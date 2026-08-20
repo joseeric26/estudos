@@ -13,6 +13,6 @@ public class aula { //cria a classe
         pontos = pontos /2;
         pontos = pontos = 10;
         pontos = pontos - 2;
-        System.out.println(pontos)
+        System.out.println(pontos);;
     }
 }
