@@ -1,0 +1,14 @@
+CREATE TABLE Veiculos (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    estado VARCHAR(1000),
+    ordem de serviço VARCHAR(15),
+); 
+CREATE TABLE Clientes (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    telefone VARCHAR(15),
+    plano VARCHAR(15),
+); 
+N:N Instrutor - Cliente

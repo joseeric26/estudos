@@ -1,0 +1,14 @@
+CREATE TABLE filmes/séries (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    id VARCHAR(100),
+    avaliações VARCHAR(15),
+); 
+CREATE TABLE usuario (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    senha VARCHAR(15),
+    plano VARCHAR(15),
+); 
+N:N filmes/séries - Usuario

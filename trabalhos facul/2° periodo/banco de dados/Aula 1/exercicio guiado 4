@@ -1,0 +1,18 @@
+CREATE TABLE Aluno (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    serie VARCHAR(100),
+    telefonePais VARCHAR(15)
+);
+CREATE TABLE Turma (
+    id INT PRIMARY KEY,
+    numeroAlunos VARCHAR(100),
+);
+CREATE TABLE Professora (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    telefone VARCHAR(15),
+    materia VARCHAR(100)
+);
+N:1 1:1 1:N → Aluno - Turma - Professora - Aluno

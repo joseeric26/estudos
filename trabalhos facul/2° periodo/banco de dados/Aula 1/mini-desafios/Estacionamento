@@ -1,0 +1,8 @@
+CREATE TABLE Carro (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    numeroSerie VARCHAR(100),
+    tempo VARCHAR(15),
+    vaga VARCHAR(100)
+    telefone VARCHAR(15),
+);
