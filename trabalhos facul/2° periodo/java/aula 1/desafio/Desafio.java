@@ -4,7 +4,7 @@ public class Desafio {
 //seta atributos
     private String nome;
     private int nivel;
-    private double vida;
+    private double Vida;
     private Boolean chefe;
 //permite armezenar varios personagens
     public String getNome() {
@@ -20,10 +20,13 @@ public class Desafio {
         this.nivel = nivel;
     }
     public double getVida() {
-        return vida;
+        return Vida;
     }
-    public void setVida(double vida) {
-        this.vida = vida;
+    public void setVida(double newVida) {
+        int vidamaxima = 100;
+        if (newVida <= vidamaxima) {
+            Vida = newVida;
+        }
     }
     public Boolean getChefe() {
         return chefe;
@@ -41,7 +44,7 @@ public class Desafio {
         Ronaldo.setVida(200);
         Ronaldo.setChefe(true);
         for (Desafio personagem: new Desafio[]{Ronaldo}) {
-            System.out.println( "%s é nivel %n e chega a %v de vida" + Ronaldo.getNome() + Ronaldo.getNivel() + Ronaldo.getVida() + Ronaldo.getChefe());
+            System.out.println(personagem.getNome() + " é nivel " + personagem.getNivel() + " e chega a " + personagem.getVida() + " de vida, Chefe: "+ personagem.getChefe());
         }
     }
 }

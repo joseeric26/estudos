@@ -46,8 +46,16 @@ public class Aula {
         Ronaldo.setVida(20.0);
         Ronaldo.setChefe(true);
         Ronaldo.setIdade(18);
-        for (Aula personagem: new Aula[]{Ronaldo}) {
-            System.out.println( "%s é nivel %n e chega a %v de vida" + Ronaldo.getNome() + Ronaldo.getNivel() + Ronaldo.setVida());
+
+        Aula Ronalda = new Aula();
+
+        Ronalda.setNome("Ronaldo");
+        Ronalda.setNivel(20);
+        Ronalda.setVida(20.0);
+        Ronalda.setChefe(true);
+        Ronalda.setIdade(16);
+        for (Aula personagem: new Aula[]{Ronaldo, Ronalda}) {
+            System.out.println( "%s é nivel %n e chega a %v de vida" + personagem.getNome() + personagem.getNivel() + personagem.getChefe());
             //condição relacionada a idade
             if (personagem.idade >= 18) {
                 System.out.println("Liberado");
