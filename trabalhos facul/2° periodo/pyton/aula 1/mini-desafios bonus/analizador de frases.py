@@ -1,0 +1,7 @@
+frase = input("Digite uma frase: ")
+numero_de_palavras = len(frase.split())
+numero_de_caracteres = len(frase)
+fraseMaiuscula = frase.upper()
+print(f"Número de palavras: {numero_de_palavras}")
+print(f"Número de caracteres: {numero_de_caracteres}")  
+print(f"Frase em maiúsculas: {fraseMaiuscula}")
