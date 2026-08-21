@@ -1,13 +1,14 @@
+package desafio;
+
 import java.util.ArrayList;
 
-public class Aula {
+public class DesafioPersonagem {
     //seta atributos
     private String nome;
     private int nivel;
-    private double Vida;
+    private double vida;
     private Boolean chefe;
     private int idade;
-
     //funções
     public String getNome() {
         return nome;
@@ -22,10 +23,10 @@ public class Aula {
         this.nivel = nivel;
     }
     public double setVida() {
-        return Vida;
+        return vida;
     }
-    public void setVida(double Vida) {
-        this.Vida = Vida;
+    public void setVida(double vida) {
+        this.vida = vida;
     }
     public Boolean getChefe() {
         return chefe;
@@ -38,9 +39,6 @@ public class Aula {
     }
     public void setIdade(int idade) {
         this.idade = idade;
-    }
-    public double getVida() {
-        return Vida;
     }
     //declarar personagem
     public static void main(String[] args) {
@@ -58,7 +56,7 @@ public class Aula {
         }
         ArrayList<Integer> nums = new ArrayList<>();
         nums.add(10);   // autoboxing: 10 vira Integer
-        Aula Ronaldo = new Aula();
+        DesafioPersonagem Ronaldo = new DesafioPersonagem();
 
         Ronaldo.setNome("Ronaldo");
         Ronaldo.setNivel(20);
@@ -66,15 +64,15 @@ public class Aula {
         Ronaldo.setChefe(true);
         Ronaldo.setIdade(18);
 
-        Aula Ronalda = new Aula();
+        DesafioPersonagem Ronalda = new DesafioPersonagem();
 
         Ronalda.setNome("Ronaldo");
         Ronalda.setNivel(0);
         Ronalda.setVida(20.0);
         Ronalda.setChefe(true);
         Ronalda.setIdade(16);
-        for (Aula personagem: new Aula[]{Ronaldo, Ronalda}) {
-            System.out.println(personagem.getNome() + " é nivel" + personagem.getNivel() + " e chega a " + personagem.getVida() + " de vida" + personagem.getChefe());
+        for (DesafioPersonagem personagem: new DesafioPersonagem[]{Ronaldo, Ronalda}) {
+            System.out.println( "%s é nivel %n e chega a %v de vida" + personagem.getNome() + personagem.getNivel() + personagem.getChefe());
             //condição relacionada a idade
             if (personagem.idade >= 18) {
                 System.out.println("Liberado");
@@ -91,11 +89,9 @@ public class Aula {
                 default:
                     System.out.println("Inválida");
             }
-            int i = 0;
             do {
                 System.out.println("modo bebe");
-                i = i + 1;
-            } while (i <= 5);
+            } while (personagem.nivel <= 5);
             while (personagem.nivel <= 5) {
                 System.out.println(personagem.nivel);
                 personagem.setNivel(personagem.nivel + 1);
