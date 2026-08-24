@@ -1,0 +1,29 @@
+CREATE TABLE Paciente (
+    CPF INT PRIMARY KEY,
+    nome VARCHAR(100),
+);
+CREATE TABLE Medico (
+    CRM INT PRIMARY KEY,
+    nome VARCHAR(100),
+);
+CREATE TABLE Especialidade (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+);
+CREATE TABLE MedicoEspecialidade (
+    medicocrm INT PRIMARY KEY,
+    especialidadeid INT PRIMARY KEY,
+);
+CREATE TABLE Consulta (
+    id INT PRIMARY KEY,
+    data_pedido DATE,
+    hora TIME,
+    CONSTRAINT FK_Consulte_Paciente
+        FOREIGN KEY (paciente_cpf) REFERENCES Paciente(id),
+    CONSTRAINT FK_Consulta_MedicoEspecialidade
+        FOREIGN KEY (medicocrm) REFERENCES PMedicoEspecialidade(id)
+);
+-- Paciente (1) -- (N) Consulta
+-- Consulta (1) -- (N) Medico
+-- Medico (1) -- (N) MedicoEspecialidade
+-- MedicoEspecialidade (N) -- (1) Especialidade

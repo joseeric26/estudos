@@ -1,0 +1,23 @@
+CREATE TABLE Carro (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    placa VARCHAR(100),
+    tempo TIME,
+    vaga VARCHAR(100),
+);
+CREATE TABLE Clientes (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    telefone VARCHAR(15),
+); 
+CREATE TABLE Preço (
+    id INT PRIMARY KEY,
+    tempo TIME,
+    preço VARCHAR(1500),
+    CONSTRAINT FK_Preço_Carro
+        FOREIGN KEY (carro_id) REFERENCES Carro(id),
+    CONSTRAINT FK_Preço_Cliente
+        FOREIGN KEY (cliente_id) REFERENCES Cliente(id)
+);
+-- Clientes (1) - (1) Plano
+-- Carro (1) - (1) Plano

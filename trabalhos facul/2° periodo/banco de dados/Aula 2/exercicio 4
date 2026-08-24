@@ -1,0 +1,30 @@
+CREATE TABLE Professor (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+);
+CREATE TABLE Aluno (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+);
+CREATE TABLE Disciplina (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+);
+CREATE TABLE Turma (
+    id INT PRIMARY KEY,
+    nome DATE,
+    CONSTRAINT FK_Turma_Professor
+        FOREIGN KEY (professor_cpf) REFERENCES Professor(id),
+    CONSTRAINT FK_Turma_Aluno
+        FOREIGN KEY (aluno_id) REFERENCES Aluno(id)
+);
+CREATE TABLE TurmaDisciplina (
+    CONSTRAINT FK_TurmaDisciplina_Disciplina
+        FOREIGN KEY (disciplina_cpf) REFERENCES Disciplina(id),
+    CONSTRAINT FK_TurmaDisciplina_Turma
+        FOREIGN KEY (turma_id) REFERENCES Turma(id)
+);
+-- Professor (1) -- (1) Turma
+-- Aluno (N) -- (1) Turma
+-- Disciplina (N) -- (1) TurmaDisciplina
+-- Turma (1) -- (N) TurmaDisciplina

@@ -1,0 +1,38 @@
+CREATE TABLE Carro (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    estado VARCHAR(1000),
+    ordemServiço VARCHAR(15),
+); 
+CREATE TABLE Preço (
+    id INT PRIMARY KEY,
+    tempo TIME,
+    preço VARCHAR(1500),
+    CONSTRAINT FK_Preço_Carro
+        FOREIGN KEY (carro_id) REFERENCES Carro(id),
+    CONSTRAINT FK_Pereço_Conserto
+        FOREIGN KEY (conserto_id) REFERENCES Conserto(id)
+);
+CREATE TABLE Clientes (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    telefone VARCHAR(15),
+); 
+CREATE TABLE Mechanico (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    telefone VARCHAR(15),
+);
+CREATE TABLE Conserto (
+    id INT PRIMARY KEY,
+    tempo TIME,
+    preço VARCHAR(1500),
+    CONSTRAINT FK_Conserto_Carro
+        FOREIGN KEY (carro_id) REFERENCES Carro(id),
+    CONSTRAINT FK_Conserto_Mechanico
+        FOREIGN KEY (mechanico_id) REFERENCES Mechanico(id)
+);
+-- Clientes (1) - (N) Preço
+--Preço (1) - (1) Carro
