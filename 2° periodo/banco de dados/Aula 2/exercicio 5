@@ -1,0 +1,40 @@
+CREATE TABLE Cliento (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+);
+CREATE TABLE Categoria (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+);
+CREATE TABLE Fornercedor (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+);
+CREATE TABLE Pedido (
+    id INT PRIMARY KEY,
+    data DATE,
+    CONSTRAINT FK_Pedido_Cliento
+        FOREIGN KEY (cliento_cpf) REFERENCES Cliento(id),
+);
+CREATE TABLE Produto (
+    id INT PRIMARY KEY,
+    nome DATE,
+    preço VARCHAR(100),
+    CONSTRAINT pK_Produto_Categoria
+        FOREIGN KEY (categoria_cpf) REFERENCES Categoria(id),
+    CONSTRAINT FK_Produto_Fornercedor
+        FOREIGN KEY (fornercedor_id) REFERENCES Fornercedor(id)
+);
+CREATE TABLE ItemPedido (
+    id INT PRIMARY KEY,
+    quantidade DATE,
+    CONSTRAINT FK_ItemPedido_Pedido
+        FOREIGN KEY (pedido_cpf) REFERENCES Pedido(id),
+    CONSTRAINT FK_ItemPedido_Produto
+        FOREIGN KEY (produto_id) REFERENCES Produto(id)
+);
+--Cliento (1) -- (N) Produto
+-- Produto (1) -- (N) ItemPedido
+-- ItemPedido (N) -- (1) Produto
+-- Fornecedor (N) -- (1) Produto
+-- Categoria (N) -- (1) Produto

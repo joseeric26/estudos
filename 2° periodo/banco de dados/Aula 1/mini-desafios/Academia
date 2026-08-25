@@ -1,0 +1,22 @@
+CREATE TABLE Instrutor (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    telefone VARCHAR(15),
+); 
+CREATE TABLE Clientes (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    telefone VARCHAR(15),
+    idplano VARCHAR(15),
+); 
+CREATE TABLE Plano (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    tempo VARCHAR(100),
+    preço VARCHAR(1500),
+    idplano VARCHAR(15),
+); 
+N:N Instrutor - Cliente
+1:N Plano - Cliente

@@ -1,0 +1,20 @@
+CREATE TABLE Cliente (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+);
+CREATE TABLE Veiculo (
+    id INT PRIMARY KEY,
+    modelo VARCHAR(100),
+    ano DATE
+);
+CREATE TABLE Aluguel (
+    id INT PRIMARY KEY,
+    data_pedido DATE,
+    hora TIME,
+    CONSTRAINT FK_Aluguel_Cliente
+        FOREIGN KEY (cliente_cpf) REFERENCES Cliente(id),
+    CONSTRAINT FK_Aluguel_Veiculo
+        FOREIGN KEY (veiculo_id) REFERENCES Veiculo(id)
+);
+-- Aluguel (1) -- (N) Cliente
+-- Cliente (N) -- (1) Veiculo

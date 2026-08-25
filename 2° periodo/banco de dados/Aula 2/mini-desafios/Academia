@@ -1,0 +1,24 @@
+CREATE TABLE Instrutor (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    telefone VARCHAR(15),
+    horario TIME
+);
+CREATE TABLE Clientes (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    telefone VARCHAR(15),
+    plano_id INT,
+);
+CREATE TABLE Plano (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    tempo VARCHAR(100),
+    preço VARCHAR(1500),
+     CONSTRAINT FK_Pedido_Cliente
+        FOREIGN KEY (cliente_id) REFERENCES Cliente(id)
+);
+-- Instrutor (N) - (N) Cliente
+-- Plano (1) - (N) liente

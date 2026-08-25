@@ -1,0 +1,8 @@
+Fase,Etapa,Requisitos principais
+1 - Grupo de trabalho interno,Definição e atribuição,"Instituir grupo por portaria; Atribuir funções e responsabilidades; Nomear encarregado de dados pessoais"
+2 - Diagnóstico e planejamento,Avaliação inicial,"Alinhar expectativas com alta administração; Diagnóstico de maturidade; Diagnóstico de cultura organizacional; Planejamento do Programa de Proteção de Dados"
+3 - Inventário de dados,Levantamento,"Mapear processos e documentos; Criar instrumento para inventário; Realizar piloto e validar; Elaborar políticas internas e gerais de privacidade; Publicar política no site institucional"
+4 - Riscos e falhas,Gestão,"Analisar riscos e elaborar RIPD; Identificar falhas (gap analysis); Propor medidas corretivas; Atualizar política de segurança da informação; Adequar contratos; Treinar e sensibilizar servidores"
+5 - Implementação,Execução,"Definir cronograma de implementação; Estabelecer plano de respostas aos titulares; Criar canal de comunicação (E-SIC/E-OUV); Elaborar plano de contingência"
+6 - Atendimento,Contingência,"Padronizar práticas de resposta; Definir funcionamento do canal; Plano de contingência para vazamentos"
+7 - Monitoramento,Acompanhamento,"Indicadores de desempenho; Novos diagnósticos de maturidade e cultura; Reporte à alta administração; Gestão de incidentes; Reforço da cultura interna"

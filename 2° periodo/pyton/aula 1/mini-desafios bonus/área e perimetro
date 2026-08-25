@@ -1,0 +1,19 @@
+forma = input("Forma (retângulo, quadrado, círculo): ").lower()
+if forma == "retângulo":
+    largura = float(input("Largura (m): "))
+    comprimento = float(input("Comprimento (m): "))
+    area = largura * comprimento
+    perimetro = 2 * (largura + comprimento)
+elif forma == "quadrado":
+    lado = float(input("Lado (m): "))
+    area = lado ** 2
+    perimetro = 4 * lado
+elif forma == "círculo":
+    raio = float(input("Raio (m): "))
+    area = 3.14159 * raio ** 2
+    perimetro = 2 * 3.14159 * raio
+else:
+    print("Forma inválida.")
+    area = indefinido # pyright: ignore[reportUndefinedVariable]
+    perimetro = indefinido # pyright: ignore[reportUndefinedVariable]
+print(f"Área: {area:.2f} m² | Perímetro: {perimetro:.2f} m")

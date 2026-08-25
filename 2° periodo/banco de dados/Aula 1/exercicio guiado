@@ -1,0 +1,13 @@
+CREATE TABLE Cliente (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    telefone VARCHAR(15)
+);
+CREATE TABLE Pizza (
+    id INT PRIMARY KEY,
+    sabor VARCHAR(100),
+    preco DECIMAL(10, 2),
+    tamanho VARCHAR(50)
+);
+N:1 → Cliente - Pizza

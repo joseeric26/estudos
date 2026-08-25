@@ -1,0 +1,8 @@
+CREATE TABLE Hópede (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    quarto VARCHAR(100),
+    tempo VARCHAR(15),
+    reserva VARCHAR(100)
+    telefone VARCHAR(15),
+);

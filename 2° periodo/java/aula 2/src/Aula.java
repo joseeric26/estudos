@@ -1,0 +1,110 @@
+import java.util.ArrayList;
+
+public class Aula {
+    //seta atributos
+    private String nome;
+    private int nivel;
+    private double Vida;
+    private Boolean chefe;
+    private int idade;
+
+    //funções
+    public String getNome() {
+        return nome;
+    }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+    public int getNivel() {
+        return nivel;
+    }
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
+    }
+    public double setVida() {
+        return Vida;
+    }
+    public void setVida(double Vida) {
+        this.Vida = Vida;
+    }
+    public Boolean getChefe() {
+        return chefe;
+    }
+    public void setChefe(Boolean chefe) {
+        this.chefe = chefe;
+    }
+    public int getIdade() {
+        return idade;
+    }
+    public void setIdade(int idade) {
+        this.idade = idade;
+    }
+    public double getVida() {
+        return Vida;
+    }
+    //declarar personagem
+    public static void main(String[] args) {
+        System.out.println("Hello World"); // escrave hello word
+        ArrayList<String> nomes = new
+                ArrayList<>();
+        nomes.add("Ana");
+        nomes.add("Bruno");
+        nomes.add("Ana");     // adiciona
+        nomes.get(0);         // "Ana"
+        nomes.size();         // 2
+        nomes.remove(0);
+        for (String nome : nomes) {
+            System.out.println(nome);
+        }
+        ArrayList<Integer> nums = new ArrayList<>();
+        nums.add(10);   // autoboxing: 10 vira Integer
+        Aula Ronaldo = new Aula();
+
+        Ronaldo.setNome("Ronaldo");
+        Ronaldo.setNivel(20);
+        Ronaldo.setVida(20.0);
+        Ronaldo.setChefe(true);
+        Ronaldo.setIdade(18);
+
+        Aula Ronalda = new Aula();
+
+        Ronalda.setNome("Ronaldo");
+        Ronalda.setNivel(0);
+        Ronalda.setVida(20.0);
+        Ronalda.setChefe(true);
+        Ronalda.setIdade(16);
+        for (Aula personagem: new Aula[]{Ronaldo, Ronalda}) {
+            System.out.println(personagem.getNome() + " é nivel" + personagem.getNivel() + " e chega a " + personagem.getVida() + " de vida" + personagem.getChefe());
+            //condição relacionada a idade
+            if (personagem.idade >= 18) {
+                System.out.println("Liberado");
+            } else {
+                System.out.println("Negado");
+            }
+            switch (personagem.getIdade()) {
+                case 1:
+                    System.out.println("Sacar");
+                    break;
+                case 2:
+                    System.out.println("Extrato");
+                    break;
+                default:
+                    System.out.println("Inválida");
+            }
+            int i = 0;
+            do {
+                System.out.println("modo bebe");
+                i = i + 1;
+            } while (i <= 5);
+            while (personagem.nivel <= 5) {
+                System.out.println(personagem.nivel);
+                personagem.setNivel(personagem.nivel + 1);
+                personagem.idade++;
+            }
+            for (personagem.idade = 1; personagem.getIdade() <= 5; personagem.idade++) {
+                System.out.println(personagem.idade);
+            }
+
+        }
+    }
+}
