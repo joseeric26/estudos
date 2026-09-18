@@ -1,14 +1,28 @@
-CREATE TABLE Veiculos (
-    id INT PRIMARY KEY,
-    nome VARCHAR(100),
-    estado VARCHAR(1000),
-    ordem de serviço VARCHAR(15),
-); 
 CREATE TABLE Clientes (
     id INT PRIMARY KEY,
     nome VARCHAR(100),
     email VARCHAR(100),
     telefone VARCHAR(15),
-    plano VARCHAR(15),
-); 
-N:N Instrutor - Cliente
+    plano VARCHAR(15)
+);
+
+CREATE TABLE Veiculos (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    estado VARCHAR(1000),
+    ordem_servico VARCHAR(15),
+    id_cliente INT,
+    FOREIGN KEY (id_cliente) REFERENCES Clientes(id)
+);
+
+CREATE TABLE Pagamento (
+    id INT PRIMARY KEY,
+    valor DECIMAL(10,2),
+    data_pagamento DATE,
+    forma_pagamento VARCHAR(50),
+    status VARCHAR(30),
+    id_cliente INT,
+    id_veiculo INT,
+    FOREIGN KEY (id_cliente) REFERENCES Clientes(id),
+    FOREIGN KEY (id_veiculo) REFERENCES Veiculos(id)
+);
