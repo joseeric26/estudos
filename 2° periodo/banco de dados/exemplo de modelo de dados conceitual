@@ -1,0 +1,67 @@
+# 📘 Modelagem Conceitual - Academia
+
+## 1. Cenário escolhido
+Uma **Academia de ginástica** que controla seus alunos, os planos contratados e os treinos prescritos pelos instrutores.
+
+---
+
+## 2. Entidades e atributos
+
+### 🧍 Aluno
+- **PK:** `id_aluno`
+- `nome`
+- `cpf`
+- `data_nascimento`
+- `telefone`
+- `email`
+
+### 📋 Plano
+- **PK:** `id_plano`
+- `descricao`
+- `valor_mensal`
+- `duracao_meses`
+
+### 🏋️ Treino
+- **PK:** `id_treino`
+- `descricao`
+- `data_inicio`
+- `data_fim`
+
+---
+
+## 3. Relacionamentos
+
+- **Aluno – Plano**  
+  - Um aluno contrata **um plano**.  
+  - Um plano pode ser contratado por **muitos alunos**.  
+  - **Cardinalidade:** 1:N (Plano → Aluno)
+
+- **Aluno – Treino**  
+  - Um aluno pode ter **muitos treinos** ao longo do tempo.  
+  - Um treino pertence a **um único aluno**.  
+  - **Cardinalidade:** 1:N (Aluno → Treino)
+
+- **Treino – Instrutor** *(opcional)*  
+  - Um treino é prescrito por **um instrutor**.  
+  - Um instrutor pode prescrever **muitos treinos**.  
+  - **Cardinalidade:** 1:N (Instrutor → Treino)
+
+---
+
+## 4. Diagrama conceitual (texto descritivo)
+
+- **Aluno (1) — (N) Treino**  
+- **Plano (1) — (N) Aluno**  
+- **Instrutor (1) — (N) Treino**
+
+---
+
+## 5. Observações
+- Cada entidade possui um identificador único (PK).  
+- Os relacionamentos foram mapeados com suas respectivas cardinalidades.  
+- Esse modelo conceitual pode ser transformado em modelo lógico (tabelas relacionais) e depois físico (implementação em banco de dados).  
+
+---
+
+## 6. Objetivo da atividade
+A construção desse escopo inicial ajuda a equipe a transformar um cenário real em uma estrutura de banco de dados, permitindo compreender na prática como levantar requisitos de dados antes de partir para a modelagem lógica e física. Isso reforça a importância de planejar a estrutura antes de implementar, evitando retrabalho e inconsistências futuras.
