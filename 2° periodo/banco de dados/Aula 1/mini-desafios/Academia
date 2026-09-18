@@ -2,21 +2,32 @@ CREATE TABLE Instrutor (
     id INT PRIMARY KEY,
     nome VARCHAR(100),
     email VARCHAR(100),
-    telefone VARCHAR(15),
-); 
+    telefone VARCHAR(15)
+);
+
+CREATE TABLE Plano (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100),
+    tempo VARCHAR(100),
+    preco DECIMAL(10,2)
+);
+
 CREATE TABLE Clientes (
     id INT PRIMARY KEY,
     nome VARCHAR(100),
     email VARCHAR(100),
     telefone VARCHAR(15),
-    idplano VARCHAR(15),
-); 
-CREATE TABLE Plano (
-    id INT PRIMARY KEY,
-    nome VARCHAR(100),
-    tempo VARCHAR(100),
-    preço VARCHAR(1500),
-    idplano VARCHAR(15),
+    idplano INT,
+    FOREIGN KEY (idplano) REFERENCES Plano(id)
+);
+
+CREATE TABLE Instrutor_Cliente (
+    id_instrutor INT,
+    id_cliente INT,
+    PRIMARY KEY (id_instrutor, id_cliente),
+    FOREIGN KEY (id_instrutor) REFERENCES Instrutor(id),
+    FOREIGN KEY (id_cliente) REFERENCES Clientes(id)
+);
 ); 
 N:N Instrutor - Cliente
 1:N Plano - Cliente
