@@ -1,0 +1,91 @@
+# 🏥 Sistema Hospitalar - Banco de Dados
+
+Este repositório apresenta a modelagem e implementação de um **banco de dados para um sistema hospitalar**, desenvolvido inicialmente a partir de um **Diagrama Entidade-Relacionamento (DER)** e posteriormente aprimorado para código SQL completo.
+
+---
+
+## 📌 Etapas do Desenvolvimento
+
+### 🔹 1. Criação do Diagrama ERD
+- Modelagem das entidades principais:
+  - 👤 **Paciente**
+  - 🩺 **Médico**
+  - 📅 **Consulta**
+  - 🧾 **Diagnóstico**
+  - 💊 **Receita**
+- Relacionamentos definidos:
+  - Um paciente pode ter várias consultas.
+  - Um médico pode atender várias consultas.
+  - Uma consulta pode gerar múltiplos diagnósticos e receitas.
+
+---
+
+### 🔹 2. Estruturação das Tabelas em SQL
+As tabelas foram criadas com **chaves primárias, estrangeiras e restrições**:
+
+- 👤 **PACIENTE**  
+  - PK: **CPF**  
+  - Campos: nome, data de nascimento, telefone, endereço  
+  - Autenticação: usuário e senha  
+
+- 🩺 **MEDICO**  
+  - PK: **CRM**  
+  - Campos: nome, especialidade, telefone  
+  - Autenticação: usuário e senha  
+  - Financeiro: preço da consulta  
+
+- 📅 **CONSULTA**  
+  - PK: **IDENTITY**  
+  - FK: paciente (CPF) e médico (CRM)  
+  - Campos: diagnóstico, observações  
+  - Financeiro: preço, imposto (15%), total com imposto  
+
+- 🧾 **DIAGNOSTICO**  
+  - Associado a uma consulta  
+  - Campos: descrição e data  
+
+- 💊 **RECEITA**  
+  - Associada a uma consulta  
+  - Campos: medicamento, dosagem, instruções, descrição  
+
+---
+
+### 🔹 3. Controle de Permissões
+- 👨‍⚕️ **medico_user** → pode inserir e atualizar pacientes, médicos, consultas, diagnósticos e receitas  
+- 👩‍🦰 **paciente_user** → apenas leitura em consultas, diagnósticos e receitas  
+
+---
+
+### 🔹 4. Inserção de Dados de Exemplo
+O script inclui registros para simular o funcionamento do sistema:
+
+- **Pacientes**: João Silva, Maria Oliveira, Carlos Pereira  
+- **Médicos**: Dra. Ana Souza (Cardiologia), Dr. Pedro Santos (Ortopedia), Dra. Beatriz Lima (Dermatologia)  
+- **Consultas**: já com diagnósticos e receitas correspondentes  
+
+---
+
+## 🚀 Lógica Implementada
+✔️ Autenticação com usuário e senha  
+✔️ Cálculo automático de imposto e total da consulta  
+✔️ Relacionamentos entre todas as entidades  
+✔️ Controle de acesso com permissões diferenciadas  
+✔️ Inserções de exemplo para simulação prática  
+
+---
+
+## 📂 Estrutura do Código
+1. 📑 Criação de tabelas  
+2. 🔗 Definição de chaves e relacionamentos  
+3. 🔒 Configuração de permissões  
+4. 📝 Inserções de exemplo  
+
+---
+
+## 🎯 Objetivo
+Este projeto serve como **modelo de banco de dados hospitalar**, podendo ser expandido para sistemas reais de gestão médica, com foco em:
+- 🔐 Segurança de dados  
+- 💰 Controle financeiro  
+- 🩺 Registro clínico estruturado  
+
+---
