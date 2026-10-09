@@ -1,0 +1,3 @@
+# Executar diariamente às 02:00 (edite com: crontab -e).
+# Ajuste os caminhos absolutos e carregue as variáveis em um arquivo protegido.
+0 2 * * * /caminho/absoluto/sistema-hospitalar-final/08_backup.sh >> /var/log/backup-hospitalar.log 2>&1

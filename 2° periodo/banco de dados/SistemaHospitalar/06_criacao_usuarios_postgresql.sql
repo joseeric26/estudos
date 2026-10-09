@@ -7,14 +7,21 @@ DROP ROLE IF EXISTS medico_user;
 DROP ROLE IF EXISTS hospital_manager;
 DROP ROLE IF EXISTS hospital_superuser;
 
-CREATE USER hospital_superuser WITH PASSWORD 'Troque_Esta_Senha_Super@2026';
+CREATE USER hospital_superuser;
 ALTER USER hospital_superuser WITH SUPERUSER CREATEDB CREATEROLE INHERIT;
 
-CREATE USER hospital_manager WITH PASSWORD 'Troque_Esta_Senha_Manager@2026';
+CREATE USER hospital_manager;
 ALTER USER hospital_manager WITH NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT;
 
-CREATE USER medico_user WITH PASSWORD 'Troque_Esta_Senha_Medico@2026';
+CREATE USER medico_user;
 ALTER USER medico_user WITH NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT;
 
-CREATE USER paciente_user WITH PASSWORD 'Troque_Esta_Senha_Paciente@2026';
+CREATE USER paciente_user;
 ALTER USER paciente_user WITH NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT;
+
+-- Defina as senhas de forma interativa após executar este arquivo no psql:
+-- \password hospital_superuser
+-- \password hospital_manager
+-- \password medico_user
+-- \password paciente_user
+-- Não armazene senhas reais em arquivos versionados.

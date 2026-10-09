@@ -234,3 +234,92 @@ O arquivo `06_permissoes.sql` contém somente GRANT/REVOKE. Antes dele, em uma c
 O arquivo `07_explain.sql` contém `EXPLAIN ANALYZE`, que é requisito do trabalho e é sintaxe específica do PostgreSQL.
 
 Se o DBeaver sublinhar `CREATE USER` ou `EXPLAIN ANALYZE` como erro antes da execução, configure o SQL dialect da conexão/arquivo para PostgreSQL. Esses comandos não são comandos SQL genéricos e não podem ser tornados simultaneamente compatíveis com todos os bancos sem deixar de cumprir o requisito de PostgreSQL.
+
+---
+
+## 12. Backup lógico automatizado (Sprint final)
+
+O arquivo `08_backup.sh` executa `pg_dump` no formato customizado (`-Fc`), acrescenta data/hora ao nome, grava primeiro em arquivo temporário e só publica o arquivo final após sucesso. Em caso de falha, o script retorna código diferente de zero e remove o arquivo parcial. A limpeza remove arquivos `.dump` do banco configurado com mais de 30 dias (configurável por `RETENTION_DAYS`).
+
+### Configuração e execução
+
+Configure `PGDATABASE`, `PGUSER` e, conforme o ambiente, `PGHOST` e `PGPORT`. Para autenticação automatizada, prefira `~/.pgpass` ou `PGPASSFILE` com permissões `0600`; não coloque senha no script nem no repositório.
+
+```bash
+chmod +x 08_backup.sh
+export PGDATABASE=hospitalar
+export PGUSER=usuario_backup
+export BACKUP_DIR="$HOME/backups/hospitalar"
+./08_backup.sh
+```
+
+### Agendamento diário às 02:00
+
+Edite o crontab com `crontab -e`, copie a linha de `09_cron_backup.txt` e substitua o caminho de exemplo pelo caminho absoluto. Garanta que o ambiente do cron carregue as variáveis necessárias e que o usuário tenha acesso ao diretório e ao banco. O log é redirecionado para `/var/log/backup-hospitalar.log`; ajuste o destino conforme as permissões do ambiente.
+
+### Regra 3-2-1
+
+- **3 cópias:** banco original e pelo menos duas cópias de backup.
+- **2 mídias/tipos de armazenamento:** por exemplo, disco local e armazenamento independente (NAS ou mídia de backup).
+- **1 cópia externa:** mantenha uma cópia criptografada em outra conta/localidade, com acesso restrito.
+
+O script gera e retém a cópia local; replicação externa, criptografia em repouso, monitoramento e alertas devem ser configurados na infraestrutura. Um backup só é confiável após testes periódicos de restauração.
+
+### Teste de restauração
+
+Consulte [`docs/10_teste_restauracao.md`](docs/10_teste_restauracao.md). Como o dump usa `-Fc`, restaure com `pg_restore` em banco de teste. Compare as contagens de `paciente`, `consulta`, `diagnostico` e `receita` entre origem e restauração e registre as evidências. O documento deixa os resultados pendentes até a execução real; não há alegação de teste executado neste pacote.
+
+## 13. Introdução ao MongoDB
+
+A versão documental é um exercício paralelo e utiliza dados inteiramente fictícios. O script `mongodb/01_modelo_e_dados.js` cria o banco `sistema_hospitalar_nosql`, duas collections relacionadas (`pacientes` e `consultas`) e insere 11 documentos (5 pacientes e 6 consultas). Alguns documentos têm campos opcionais diferentes para demonstrar flexibilidade de esquema.
+
+### Embedding vs. Referencing
+
+- **Embedding:** a consulta contém `medico` e `triagem` embutidos. São dados pequenos, ligados ao evento da consulta e frequentemente lidos junto dele; a triagem também varia por consulta.
+- **Referencing:** `consultas.pacienteId` referencia `pacientes._id`. Os dados cadastrais do paciente são reutilizados em várias consultas e podem ser atualizados sem replicar todo o cadastro em cada documento.
+- O exemplo é didático. Em produção, avalie atualização de dados clínicos, histórico/auditoria, privacidade, tamanho dos documentos e consistência entre coleções.
+
+### Execução, consultas, índices e explain
+
+Com MongoDB instalado e `mongosh` disponível, execute os scripts na ordem:
+
+```bash
+mongosh "mongodb://localhost:27017" mongodb/01_modelo_e_dados.js
+mongosh "mongodb://localhost:27017" mongodb/02_consultas_indices_explain.js
+```
+
+O segundo script contém consultas com `find`, filtros, `sort` e projeção, cria dois índices (`pacienteId` e o composto `status + data`) e imprime `explain("executionStats")`. Analise `winningPlan`, `IXSCAN`/`COLLSCAN`, `nReturned`, `totalKeysExamined` e `totalDocsExamined`. Com apenas 6 consultas, o otimizador pode preferir `COLLSCAN`; isso é esperado em conjuntos pequenos e não comprova falha do índice.
+
+## 14. PostgreSQL x MongoDB neste domínio
+
+| Necessidade hospitalar | Tecnologia mais adequada | Motivo |
+|---|---|---|
+| Consultas, pagamentos, convênios e internações com várias relações | PostgreSQL | Chaves estrangeiras, transações ACID e consultas relacionais facilitam integridade entre entidades. |
+| Relatórios que cruzam paciente, médico, consulta e pagamento | PostgreSQL | JOINs, agregações e SQL são apropriados para relatórios relacionais. |
+| Dados de triagem opcionais e variáveis, metadados de anexos ou protótipos de formulários clínicos | MongoDB pode ser vantajoso | Documentos BSON aceitam campos variáveis e subdocumentos embutidos sem exigir que todos os registros tenham o mesmo formato. |
+| Eventos de consulta lidos junto de pequenos dados contextuais | MongoDB pode ser vantajoso | Embedding pode reduzir leituras adicionais quando os dados são acessados juntos. |
+
+A escolha não é absoluta: dados clínicos exigem controles rigorosos de privacidade, auditoria, autorização, retenção e consistência em qualquer tecnologia. MongoDB também oferece transações, e PostgreSQL também suporta dados semiestruturados via JSONB; a decisão depende dos padrões de acesso e das garantias exigidas.
+
+## 15. Estrutura final
+
+```text
+01_ddl.sql
+02_inserts.sql
+03_indices.sql
+04_consultas.sql
+05_transacoes.sql
+06_criacao_usuarios_postgresql.sql
+06_permissoes.sql
+07_explain.sql
+07_explain_postgresql.sql
+08_backup.sh
+09_cron_backup.txt
+README.md
+diagrama inicial.png
+docs/10_teste_restauracao.md
+mongodb/01_modelo_e_dados.js
+mongodb/02_consultas_indices_explain.js
+```
+
+> **Antes de publicar:** revise os arquivos e remova qualquer dado pessoal real. O script de criação de usuários não contém senhas fixas; após executá-lo com `psql`, defina as senhas interativamente usando `\password`. Nunca use credenciais de demonstração em produção. O pacote não cria nem publica automaticamente um repositório GitHub; faça o push para um repositório público ou configure acesso de leitura.
