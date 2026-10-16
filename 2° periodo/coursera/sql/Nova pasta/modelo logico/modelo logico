@@ -1,0 +1,15 @@
+-- Criação da tabela Department
+CREATE TABLE Department (
+    DepCode VARCHAR(10) NOT NULL,
+    DepName VARCHAR(100) NOT NULL,
+    PRIMARY KEY (DepCode)
+);
+
+-- Criação da tabela Employees
+CREATE TABLE Employees (
+    EmpCode VARCHAR(10) NOT NULL,
+    Name VARCHAR(100) NOT NULL,
+    DepCode VARCHAR(10) NOT NULL DEFAULT 'HR',
+    PRIMARY KEY (EmpCode),
+    FOREIGN KEY (DepCode) REFERENCES Department(DepCode)
+);
