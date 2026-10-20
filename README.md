@@ -1,25 +1,67 @@
+.
 # Estudos
 
-Este repositório serve como um armazém centralizado para todos os protótipos, exercícios e projetos desenvolvidos durante meus estudos. O objetivo aqui é manter um registro do meu progresso, aplicar novos conceitos e documentar a evolução do meu aprendizado.
+Este repositório reúne exercícios, projetos e material didático desenvolvidos ao longo dos estudos acadêmicos e pessoais. Aqui ficam organizados os aprendizados em diversas áreas, incluindo programação, banco de dados, desenvolvimento web e backend.
 
-## 🛠️ Tecnologias Utilizadas
+## 🧠 Objetivo
 
-Aqui você encontrará projetos envolvendo diversas linguagens e tecnologias:
+O objetivo deste repositório é manter um histórico de prática e evolução técnica, servindo como espaço para:
 
-*   **Python**: Projetos de lógica e automação.
-*   **Java**: Focado em orientação a objetos e estruturas de dados.
-*   **JavaScript**: Prototipagem para desenvolvimento web.
-*   **HTML & CSS**: Estruturação e estilização de interfaces.
+- revisar conceitos estudados;
+- desenvolver soluções e exercícios;
+- registrar projetos em andamento;
+- organizar material de aula e entregas.
 
-## 📂 Estrutura do Repositório
+## 🛠️ Tecnologias e áreas abordadas
 
-O repositório está organizado para facilitar a navegação:
+- Python
+- Java
+- JavaScript
+- HTML e CSS
+- Banco de dados
+- SQL
+- Backend e API
+- Front-end
 
-*   `trabalhos facul/`: Protótipos e entregas específicas das atividades acadêmicas.
+## 📁 Estrutura principal
 
-## 🚀 Objetivo
+```text
+estudos/
+├── README.md
+├── 2° periodo/
+│   ├── API e backend/
+│   │   ├── aula.sd/
+│   │   └── products-master/
+│   ├── banco de dados/
+│   │   ├── Aula 1/
+│   │   ├── Aula 2/
+│   │   └── SistemaHospitalar/
+│   ├── coursera/
+│   │   ├── java/
+│   │   ├── Python/
+│   │   └── sql/
+│   ├── front-end/
+│   ├── html/
+│   ├── java/
+│   ├── Projeto em grupo/
+│   └── pyton/
+│       ├── aula 1/
+│       └── aula 2/
+└──
+```
 
-Este espaço é um diário técnico onde revisito conceitos e refatoro soluções antigas para constante aprendizado.
+## 📚 Conteúdo em destaque
+
+- Exercícios de lógica e algoritmos em Python
+- Atividades de Java e POO
+- Projetos de API e backend com Spring
+- Modelagem e consultas em banco de dados
+- Exercícios de front-end com HTML, CSS e JavaScript
+- Material de sala de aula e desafios acadêmicos
+
+## 🚀 Status
+
+Repositório em constante atualização, organizado para acompanhar o progresso acadêmico e técnico.
 
 ---
 *Desenvolvido por joseeric26.*
