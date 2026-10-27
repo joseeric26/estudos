@@ -1,0 +1,58 @@
+services:
+  # Serviço do Banco de Dados MongoDB
+  mongodb:
+    image: mongo:7.0
+    container_name: task_manager_mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017" # Permite acesso externo pelo Windows para ferramentas como Compass
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:-adminpassword123}
+      MONGO_INITDB_DATABASE: ${MONGODB_DB:-task_manager}
+    volumes:
+      - mongodb_data:/data/db # Volume persistente nomeado para dados NoSQL
+    networks:
+      - task_network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  # Serviço da Aplicação Next.js
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: task_manager_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000" # Mapeia a porta 3000 da aplicação para o navegador no Windows
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://${MONGO_INITDB_ROOT_USERNAME:-admin}:${MONGO_INITDB_ROOT_PASSWORD:-adminpassword123}@mongodb:27017/${MONGODB_DB:-task_manager}?authSource=admin
+      - MONGODB_DB=${MONGODB_DB:-task_manager}
+      - UPLOAD_DIR=/app/uploads
+      - MAX_FILE_SIZE_BYTES=15728640
+    volumes:
+      - uploads_data:/app/uploads # Volume persistente dedicado para arquivos anexados
+    depends_on:
+      mongodb:
+        condition: service_healthy # Aguarda o MongoDB estar pronto e saudável antes de iniciar
+    networks:
+      - task_network
+
+# Volumes nomeados para persistência duradoura dos dados do MongoDB e dos arquivos
+volumes:
+  mongodb_data:
+    name: task_manager_mongodb_data
+  uploads_data:
+    name: task_manager_uploads_data
+
+# Rede isolada em bridge para comunicação segura entre os containers
+networks:
+  task_network:
+    name: task_manager_network
+    driver: bridge

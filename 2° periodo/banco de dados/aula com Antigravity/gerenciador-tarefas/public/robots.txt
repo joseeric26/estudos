@@ -1,0 +1,3 @@
+# Robots.txt para o Gerenciador de Tarefas
+User-agent: *
+Allow: /
