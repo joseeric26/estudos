@@ -1,0 +1,55 @@
+<mxfile host="65bd71144e">
+    <diagram id="jogo-multiplayer" name="Jogo Multiplayer">
+        <mxGraphModel dx="1510" dy="728" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="&lt;b&gt;Jogador A&lt;/b&gt;" vertex="1">
+                    <mxGeometry height="60" width="30" x="80" y="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" parent="1" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" value="&lt;b&gt;Jogador B&lt;/b&gt;" vertex="1">
+                    <mxGeometry height="60" width="30" x="80" y="360" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;Cliente A&lt;/b&gt;&lt;br&gt;Interface e entrada do jogador" vertex="1">
+                    <mxGeometry height="80" width="180" x="180" y="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;b&gt;Cliente B&lt;/b&gt;&lt;br&gt;Interface e entrada do jogador" vertex="1">
+                    <mxGeometry height="80" width="180" x="180" y="350" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="&lt;b&gt;Servidor de jogo&lt;/b&gt;&lt;br&gt;Servidor autoritativo&lt;br&gt;Valida ações e sincroniza o estado" vertex="1">
+                    <mxGeometry height="100" width="220" x="540" y="220" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;b&gt;Serviços da aplicação&lt;/b&gt;&lt;br&gt;Partidas, usuários e regras" vertex="1">
+                    <mxGeometry height="90" width="200" x="930" y="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" parent="1" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=15;fillColor=#f8cecc;strokeColor=#b85450;" value="&lt;b&gt;Banco de dados&lt;/b&gt;&lt;br&gt;Perfis e estado persistido" vertex="1">
+                    <mxGeometry height="100" width="160" x="950" y="350" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" edge="1" parent="1" source="4" style="endArrow=block;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" target="6" value="Ações do jogador">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" edge="1" parent="1" source="5" style="endArrow=block;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;startArrow=classic;startFill=1;" target="6" value="Ações do jogador">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" edge="1" parent="1" source="6" style="endArrow=block;startArrow=block;startFill=1;html=1;rounded=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="7" value="Estado atualizado">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" edge="1" parent="1" source="7" style="endArrow=block;startArrow=block;startFill=1;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="8" value="Consulta e persistência">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" edge="1" parent="1" source="2" style="endArrow=block;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="4" value="Jogador usa o cliente">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" edge="1" parent="1" source="3" style="endArrow=block;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="5" value="Jogador usa o cliente">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4aEE0Hg0-7TLcOEEuvnl-19" edge="1" parent="1" source="15" style="edgeStyle=none;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="6">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#e1d5e7;strokeColor=#9673a6;" value="&lt;b&gt;Comunicação em tempo real&lt;/b&gt;&lt;br&gt;WebSocket / protocolo de baixa latência" vertex="1">
+                    <mxGeometry height="60" width="220" x="540" y="414" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
