@@ -24,11 +24,11 @@ Um serviço de compra e venda online de produtos, com acompanhamento de promoç�
 - Tolerância a falhas.
 - Consistência eventual.
 
-**Estilo arquitetural:** microsserviços, arquitetura orientada a eventos e execução em nuvem pública multi-cloud.
+**Estilo arquitetural:** Arquitetura Orientada a Eventos (EDA), com Consumidor Idempotente e padrão Transactional Outbox — opcionalmente acompanhado por Inbox — e execução em nuvem pública multi-cloud.
 
-**Justificativa:** o estilo baseado em microsserviços divide o sistema em serviços independentes, permitindo escalabilidade conforme a demanda de cada área. A execução em nuvem pública multi-cloud ajuda a isolar erros em partes específicas e manter fluxos críticos operando mesmo quando serviços secundários ficam indisponíveis. A arquitetura orientada a eventos conecta os processos por meio de eventos e permite que pedidos, pagamentos e entregas sejam atualizados de forma assíncrona. Essa combinação atende à consistência eventual e reduz o acoplamento entre os fluxos.
+**Justificativa:** a Arquitetura Orientada a Eventos permite que pedidos, pagamentos, entregas e promoções sejam atualizados de forma assíncrona e com baixo acoplamento. O padrão Transactional Outbox registra o evento na mesma transação que altera o estado e um processo auxiliar o envia ao broker, evitando a perda de eventos em falhas intermediárias. O Consumidor Idempotente usa identificadores únicos e deduplicação para impedir o processamento repetido de eventos reentregues ou duplicados. O padrão Inbox pode ser aplicado nos consumidores para registrar eventos recebidos e controlar seu processamento.
 
-**Trade-offs:** há maior complexidade operacional, necessidade de observabilidade distribuída, maior custo de infraestrutura e desafios na coordenação e depuração dos serviços.
+**Trade-offs:** há maior complexidade operacional, necessidade de observabilidade distribuída, maior custo de infraestrutura e desafios na coordenação e depuração dos serviços. A equipe precisará manter registros Outbox/Inbox, políticas de repetição, limpeza e deduplicação.
 
 ### Aplicativo bancário
 
@@ -41,11 +41,11 @@ Um recurso bancário com sistema de câmbio e atualização do estado da conta.
 - Auditoria.
 - Alta escalabilidade.
 
-**Estilo arquitetural:** microsserviços orientados a eventos — Event-Driven Architecture (EDA).
+**Estilo arquitetural:** Event Sourcing (Armazenamento de Eventos) com CQRS.
 
-**Justificativa:** a divisão em microsserviços permite escalabilidade independente das áreas do sistema e separação das responsabilidades. As etapas da transferência podem funcionar de forma assíncrona por filas e brokers de mensagens, como Apache Kafka ou RabbitMQ. Cada operação financeira crítica, porém, deve manter transações locais ACID e mecanismos de compensação. O padrão Saga pode coordenar uma transferência distribuída sem manter uma transação longa em todos os serviços. Um API Gateway centraliza autenticação, autorização e controle das chamadas, enquanto o registro de eventos imutáveis contribui para auditoria, rastreabilidade e atendimento a exigências fiscais e legais.
+**Justificativa:** o Event Sourcing registra todas as operações financeiras válidas como eventos imutáveis, permitindo reconstruir o estado da conta em qualquer ponto do tempo e garantindo uma trilha completa de auditoria. O CQRS separa os comandos, responsáveis por validar alterações financeiras, das consultas, que usam modelos otimizados para saldo, histórico e câmbio. Essa separação melhora a rastreabilidade, a segurança e a escalabilidade das consultas. Um API Gateway continua centralizando autenticação e autorização.
 
-**Trade-offs:** microsserviços e eventos aumentam a complexidade operacional e exigem monitoramento, rastreamento distribuído, controle rigoroso de idempotência e estratégias consistentes de recuperação. A consistência forte continua sendo necessária nas operações financeiras críticas e não deve ser substituída pela consistência eventual do sistema inteiro.
+**Trade-offs:** o Event Sourcing aumenta a complexidade do modelo de dados, das migrações e da reconstrução de projeções. O CQRS exige manter os modelos de escrita e leitura sincronizados e pode introduzir consistência eventual nas consultas. A equipe precisará de versionamento de eventos, replay, idempotência e proteção adicional dos dados pessoais.
 
 ### Jogo multiplayer
 
@@ -69,8 +69,8 @@ Cada sistema recebeu uma arquitetura baseada em suas prioridades:
 
 | Sistema | Estilo escolhido | Prioridade atendida |
 |---|---|---|
-| E-commerce | Microsserviços, orientada a eventos e multi-cloud | Escalabilidade, resiliência e consistência eventual |
-| Aplicativo bancário | Microsserviços orientados a eventos | Segurança, auditoria e consistência ACID nas operações críticas |
+| E-commerce | EDA com Consumidor Idempotente, Transactional Outbox e Inbox opcional | Escalabilidade, resiliência e consistência eventual confiável |
+| Aplicativo bancário | Event Sourcing com CQRS | Segurança, auditoria, rastreabilidade e consistência das operações críticas |
 | Jogo multiplayer | Cliente-servidor em quatro camadas | Latência baixa, tempo real e sincronização |
 
 ## Parte 3 — Apresentação oral
